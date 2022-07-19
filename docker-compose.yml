@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+
+  mongodb_restserver:
+    container_name: mongodb_restserver
+    image: mongo:5.0
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
+      MONGO_INITDB_DATABASE: cafetin

@@ -1,12 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const { connection } = require('../database/config.db')
 
 class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
+
+        this.connectToDB();
+
         this.middlewares();
+
         this.routes();
     }
 
@@ -20,6 +25,10 @@ class Server {
         this.app.use(express.static('src/public'));
         this.app.use(express.json());
         this.app.use(cors() );
+    }
+
+    async connectToDB() {
+        await connection()
     }
 
     listen() {

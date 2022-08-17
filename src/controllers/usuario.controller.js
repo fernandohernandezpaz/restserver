@@ -3,13 +3,13 @@ const UsuarioModel = require('../models/usuario.model');
 const bcryptjs = require('bcryptjs');
 
 const usuarioGet = async (req = request, res = response) => {
-    const {q, age} = req.query;
-    // const usuarios = await UsuarioModel.find().cursor();
-    res.json({
-        msg: 'Get api',
-        q,
-        age
-    });
+    const {limit=5, from = 0} = req.query;
+    const usuarios = await UsuarioModel.find()
+        .skip(Number(from))
+        .limit(Number(limit));
+    res.json(
+        usuarios
+    );
 }
 
 const usuarioGetById = (req = request, res = response) => {

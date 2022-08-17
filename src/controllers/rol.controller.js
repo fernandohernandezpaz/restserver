@@ -2,11 +2,11 @@ const {response, request} = require('express');
 const RolModel = require('../models/rol.model');
 
 const rolGet =  async (req = request, res = response) => {
-    // const roles = await RolModel.find().cursor();
-    res.json({
-        msg: 'Get api',
-        // data: roles
-    });
+    const {limit=5, from = 0} = req.query;
+    const roles = await RolModel.find()
+        .skip(Number(from))
+        .limit(Number(limit));
+    res.json(roles);
 }
 
 const rolPost = async (req = request, res = response) => {

@@ -178,7 +178,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/roles/",
+							"raw": "localhost:8080/api/roles/?limit=10&from=10",
 							"host": [
 								"localhost"
 							],
@@ -187,6 +187,16 @@
 								"api",
 								"roles",
 								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "from",
+									"value": "10"
+								}
 							]
 						}
 					},

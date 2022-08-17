@@ -1,10 +1,10 @@
 const {response, request} = require('express');
 const UsuarioModel = require('../models/usuario.model');
 const bcryptjs = require('bcryptjs');
-const {validationResult} = require('express-validator');
 
-const userGet = (req = request, res = response) => {
+const usuarioGet = async (req = request, res = response) => {
     const {q, age} = req.query;
+    // const usuarios = await UsuarioModel.find().cursor();
     res.json({
         msg: 'Get api',
         q,
@@ -12,7 +12,7 @@ const userGet = (req = request, res = response) => {
     });
 }
 
-const userGetById = (req = request, res = response) => {
+const usuarioGetById = (req = request, res = response) => {
     const {id} = req.params;
     res.json({
         msg: 'Get api',
@@ -20,12 +20,7 @@ const userGetById = (req = request, res = response) => {
     });
 }
 
-const userPost = async (req = request, res = response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json(errors);
-    }
-
+const usuarioPost = async (req = request, res = response) => {
     const {nombre, correo, password, rol} = req.body;
     const usuario = new UsuarioModel({
         nombre,
@@ -34,17 +29,9 @@ const userPost = async (req = request, res = response) => {
         rol
     });
 
-    // check if email exists
-    const correoExiste = await UsuarioModel.findOne({correo});
-    if (correoExiste) {
-        return res.status(400).json({
-            msg:`El correo ${correo} ya existe`
-        });
-    }
-
     // encrypt password
     const salt = bcryptjs.genSaltSync();
-    usuario.password =  bcryptjs.hashSync(password, salt);
+    usuario.password = bcryptjs.hashSync(password, salt);
 
     //save
     await usuario.save();
@@ -55,26 +42,26 @@ const userPost = async (req = request, res = response) => {
     });
 }
 
-const userPut = (req = request, res = response) => {
-    const {id} = req.params
+const usuarioPut = async (req = request, res = response) => {
+    const {id} = req.params;
+    const {_id, password, google, ...data} = req.body;
+
+    const usuario = await UsuarioModel.findByIdAndUpdate(id, data);
     res.json({
-        msg: 'Put api',
-        params: {
-            id
-        }
+        usuario
     });
 }
 
-const userDelete = (req = request, res = response) => {
+const usuarioDelete = (req = request, res = response) => {
     res.json({
         msg: 'Delete api'
     });
 }
 
 module.exports = {
-    userGet,
-    userGetById,
-    userPost,
-    userPut,
-    userDelete
+    usuarioGet,
+    usuarioGetById,
+    usuarioPost,
+    usuarioPut,
+    usuarioDelete
 }

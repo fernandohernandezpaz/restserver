@@ -7,136 +7,232 @@
 	},
 	"item": [
 		{
-			"name": "Get api",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/users/?q=search&age=12",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						""
-					],
-					"query": [
-						{
-							"key": "q",
-							"value": "search"
-						},
-						{
-							"key": "age",
-							"value": "12"
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Get api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/usuarios/?q=search&age=12",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"usuarios",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "search"
+								},
+								{
+									"key": "age",
+									"value": "12"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Post api",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"{{$randomFullName}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api/users/",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Put api",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/users/:id/",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						":id",
-						""
-					],
-					"variable": [
+				{
+					"name": "Post api",
+					"event": [
 						{
-							"key": "id",
-							"value": "10"
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function randomRol() {",
+									"    const roles = ['ADMIN_ROLE', 'USER_ROLE'];",
+									"    const position = Math.floor(Math.random() * 2);",
+									"    return roles[position];",
+									"}",
+									"",
+									"pm.environment.set('randomRol', randomRol());"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"{{$randomFullName}}\",\n    \"password\": \"{{$randomPassword}}\",\n    \"correo\": \"{{$randomEmail}}\",\n    \"rol\": \"{{randomRol}}\",\n    \"google\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/usuarios/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put api",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"{{$randomUUID}}\",\n    \"nombre\": \"{{$randomFullName}}\",\n    \"correo\": \"{{$randomEmail}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/usuarios/:id/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"usuarios",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62fd1f4655e0bdd2fe0c6c66"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete api",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/usuarios/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/usuarios/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete api",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/users/",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get by id api",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/users/:id",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						":id"
-					],
-					"variable": [
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/roles/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post api",
+					"event": [
 						{
-							"key": "id",
-							"value": "1"
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"USER_ROLE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/roles/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roles",
+								""
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

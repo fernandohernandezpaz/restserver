@@ -3,13 +3,28 @@ const UsuarioModel = require('../models/usuario.model');
 const bcryptjs = require('bcryptjs');
 
 const usuarioGet = async (req = request, res = response) => {
-    const {limit=5, from = 0} = req.query;
-    const usuarios = await UsuarioModel.find()
-        .skip(Number(from))
-        .limit(Number(limit));
-    res.json(
-        usuarios
-    );
+    const {limit = 5, from = 0} = req.query;
+    if (isNaN(from) || isNaN(limit)) {
+        res.status(400).json({
+            message: 'Send a numeric value for the parameters: limit or from'
+        });
+    }
+
+    const defaultFilter = {
+        estado:true
+    };
+
+    const [total, users] = await Promise.all([
+        UsuarioModel.countDocuments(defaultFilter),
+        UsuarioModel.find(defaultFilter)
+            .skip(Number(from))
+            .limit(Number(limit))
+    ]);
+
+    res.status(200).json({
+        total,
+        users
+    });
 }
 
 const usuarioGetById = (req = request, res = response) => {

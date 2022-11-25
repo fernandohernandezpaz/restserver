@@ -32,7 +32,10 @@ router.post('', [
     validateFields
 ], usuarioPost);
 
-router.put('/:id/', usuarioPut);
+router.put('/:id/', [
+    check('id','No es un Id valido').isMongoId(),
+    check('id').custom(existsUser),
+], usuarioPut);
 
 router.delete('/:id/', [
     check('id','No es un Id valido').isMongoId(),

@@ -27,11 +27,12 @@ const usuarioGet = async (req = request, res = response) => {
     });
 }
 
-const usuarioGetById = (req = request, res = response) => {
+const usuarioGetById =  async (req = request, res = response) => {
     const {id} = req.params;
-    res.json({
-        msg: 'Get api',
-        id
+    const user = await UsuarioModel.findById(id);
+
+    res.status(200).json({
+        user
     });
 }
 
@@ -67,9 +68,19 @@ const usuarioPut = async (req = request, res = response) => {
     });
 }
 
-const usuarioDelete = (req = request, res = response) => {
+const usuarioDelete = async (req = request, res = response) => {
+    const {id} = req.params;
+
+    // delete from db
+    // await UsuarioModel.findByIdAndDelete(id);
+
+    // update the status from record in searched
+    await  UsuarioModel.findByIdAndUpdate(id, {
+        estado: false
+    })
+
     res.json({
-        msg: 'Delete api'
+        msg: `Records ${id} deleted`
     });
 }
 

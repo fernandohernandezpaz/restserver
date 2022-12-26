@@ -8,6 +8,11 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
+        this.prePath = '/api';
+        this.autenticacionPath = `${this.prePath}/autenticacion/`;
+        this.rolesPath = `${this.prePath}/roles/`;
+        this.usuarioPath = `${this.prePath}/usuarios/`;
+
         this.connectToDB();
 
         this.middlewares();
@@ -17,11 +22,14 @@ class Server {
 
     routes() {
         this.app.use(
-            '/api/usuarios/', require('../routes/usuario.routes')
+            this.autenticacionPath, require('../routes/login.routes')
         );
         this.app.use(
-            '/api/roles/', require('../routes/rol.routes')
-        )
+            this.rolesPath, require('../routes/rol.routes')
+        );
+        this.app.use(
+            this.usuarioPath, require('../routes/usuario.routes')
+        );
     }
 
     middlewares() {

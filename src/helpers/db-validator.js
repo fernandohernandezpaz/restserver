@@ -1,5 +1,5 @@
 const RolModel = require('../models/rol.model');
-const UsuarioModel = require('../models/usuario.model');
+const UsuarioModel = require('../models/index');
 
 
 const validRol = async (nombre = '') => {

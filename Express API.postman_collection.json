@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "4664be32-03df-498f-8489-d4d03016dd5f",
+		"_postman_id": "cb975244-79b1-4c77-8602-4f705b069c63",
 		"name": "Express API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23070535"
+		"_exporter_id": "5459513"
 	},
 	"item": [
 		{
@@ -15,11 +15,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/usuarios/",
+							"raw": "{{url}}/api/usuarios/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"usuarios",
@@ -27,13 +26,13 @@
 							],
 							"query": [
 								{
-									"key": "from",
-									"value": "0",
+									"key": "q",
+									"value": "search",
 									"disabled": true
 								},
 								{
-									"key": "limit",
-									"value": "4",
+									"key": "age",
+									"value": "12",
 									"disabled": true
 								}
 							]
@@ -73,11 +72,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/usuarios/",
+							"raw": "{{url}}/api/usuarios/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"usuarios",
@@ -102,11 +100,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/usuarios/:id/",
+							"raw": "{{url}}/api/usuarios/:id/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"usuarios",
@@ -127,13 +124,18 @@
 					"name": "Delete api",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/api/usuarios/:id/",
+							"raw": "{{url}}/api/usuarios/:id/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"usuarios",
@@ -143,7 +145,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "637ba64098a25dab9be5ca83"
+									"value": "637ba64398a25dab9be5ca97"
 								}
 							]
 						}
@@ -154,23 +156,27 @@
 					"name": "Get by id api",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/api/usuarios/:id/",
+							"raw": "{{url}}/api/usuarios/:id",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"usuarios",
-								":id",
-								""
+								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "637ba64098a25dab9be5ca83"
+									"value": "63aa0dd95129a16eaa991a31"
 								}
 							]
 						}
@@ -188,11 +194,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/roles/?limit=10&from=10",
+							"raw": "{{url}}/api/roles/?limit=10&from=10",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"roles",
@@ -238,11 +243,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/roles/",
+							"raw": "{{url}}/api/roles/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"roles",
@@ -253,6 +257,300 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Autenticación",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response;",
+									"",
+									"if (response.code == 200) {",
+									"    const {token} = response.json();",
+									"    pm.environment.set('token', token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"Aniyah.Jones@hotmail.com\",\n    \"password\": \"pUDMixh5v5gW0ei\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/autenticacion/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"autenticacion",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categorias",
+			"item": [
+				{
+					"name": "Categorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/categorias/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categorias",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Categoria",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Prueba 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/categorias/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categorias",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id api",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/categorias/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categorias",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "641320777727c09e75b365fa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by id api",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/categorias/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categorias",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "64134ce09d73f18c3cb5b733"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put api",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"PRUEBA 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/categorias/:id/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categorias",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "641350ba07a121d43503eeb3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080",
+			"type": "string"
 		}
 	]
 }

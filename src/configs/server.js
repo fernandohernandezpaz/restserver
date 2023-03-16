@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const {response, request} = require('express');
 const cors = require('cors');
 const { connection } = require('../database/config.db')
 
@@ -9,9 +10,12 @@ class Server {
         this.port = process.env.PORT;
 
         this.prePath = '/api';
-        this.autenticacionPath = `${this.prePath}/autenticacion/`;
-        this.rolesPath = `${this.prePath}/roles/`;
-        this.usuarioPath = `${this.prePath}/usuarios/`;
+        this.paths = {
+            autentication: `${this.prePath}/autenticacion/`,
+            roles: `${this.prePath}/roles/`,
+            usuarios: `${this.prePath}/usuarios/`,
+            categorias: `${this.prePath}/categorias/`,
+        }
 
         this.connectToDB();
 
@@ -21,15 +25,24 @@ class Server {
     }
 
     routes() {
+
         this.app.use(
-            this.autenticacionPath, require('../routes/login.routes')
+            this.paths.autentication, require('../routes/login.routes')
         );
         this.app.use(
-            this.rolesPath, require('../routes/rol.routes')
+            this.paths.roles, require('../routes/rol.routes')
         );
         this.app.use(
-            this.usuarioPath, require('../routes/usuario.routes')
+            this.paths.usuarios, require('../routes/usuario.routes')
         );
+        this.app.use(
+            this.paths.categorias, require('../routes/categoria.routes')
+        );
+        this.app.all('*', (req , res) => {
+            res.status(404).send({
+                error: 'Route not found',
+            });
+        });
     }
 
     middlewares() {

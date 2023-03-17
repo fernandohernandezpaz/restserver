@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const {response, request} = require('express');
+const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const { connection } = require('../database/config.db')
 
@@ -15,6 +15,7 @@ class Server {
             roles: `${this.prePath}/roles/`,
             usuarios: `${this.prePath}/usuarios/`,
             categorias: `${this.prePath}/categorias/`,
+            upload: `${this.prePath}/upload/`,
         }
 
         this.connectToDB();
@@ -38,6 +39,9 @@ class Server {
         this.app.use(
             this.paths.categorias, require('../routes/categoria.routes')
         );
+        this.app.use(
+            this.paths.upload, require('../routes/upload.routes')
+        );
         this.app.all('*', (req , res) => {
             res.status(404).send({
                 error: 'Route not found',
@@ -48,7 +52,12 @@ class Server {
     middlewares() {
         this.app.use(express.static('src/public'));
         this.app.use(express.json());
-        this.app.use(cors() );
+        this.app.use(cors());
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: '/tmp/',
+            createParentPath: true
+        }))
     }
 
     async connectToDB() {

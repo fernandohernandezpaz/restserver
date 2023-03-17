@@ -4,9 +4,16 @@ const CategoriaModel = require('../models/categoria.model');
 const relaciones = ['usuarioCreador', 'usuarioModificador', 'usuarioEliminador'];
 const getCategories = async (req = request, res = response) => {
     const {limit = 5, from = 0} = req.query;
+    const {nombre} = req.query;
+
     const filters = {
         estado: true
-    }
+    };
+
+    if (nombre)
+        filters['nombre'] = new RegExp(nombre, 'i');
+
+    console.log(filters);
     const [total, categorias] = await Promise.all([
         CategoriaModel.countDocuments(filters),
         CategoriaModel.find(filters)

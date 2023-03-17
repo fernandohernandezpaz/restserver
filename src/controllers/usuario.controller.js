@@ -3,20 +3,26 @@ const UsuarioModel = require('../models/usuario.model');
 const bcryptjs = require('bcryptjs');
 
 const usuarioGet = async (req = request, res = response) => {
-    const {limit = 5, from = 0} = req.query;
-    if (isNaN(from) || isNaN(limit)) {
-        res.status(400).json({
+    const {search, limit = 5, from = 0} = req.query;
+    if (isNaN(from) || isNaN(limit))
+        return res.status(400).json({
             message: 'Send a numeric value for the parameters: limit or from'
+        });
+
+    const filters = {
+        estado: true
+    };
+
+    if (search) {
+        const regexSearch = new RegExp(search, 'i');
+        Object.assign(filters, {
+            $or: [{nombre: regexSearch}, {correo: regexSearch}]
         });
     }
 
-    const defaultFilter = {
-        estado:true
-    };
-
     const [total, users] = await Promise.all([
-        UsuarioModel.countDocuments(defaultFilter),
-        UsuarioModel.find(defaultFilter)
+        UsuarioModel.countDocuments(filters),
+        UsuarioModel.find(filters)
             .skip(Number(from))
             .limit(Number(limit))
     ]);
@@ -27,7 +33,7 @@ const usuarioGet = async (req = request, res = response) => {
     });
 }
 
-const usuarioGetById =  async (req = request, res = response) => {
+const usuarioGetById = async (req = request, res = response) => {
     const {id} = req.params;
     const user = await UsuarioModel.findById(id);
 
@@ -75,7 +81,7 @@ const usuarioDelete = async (req = request, res = response) => {
     // await UsuarioModel.findByIdAndDelete(id);
 
     // update the status from record in searched
-    await  UsuarioModel.findByIdAndUpdate(id, {
+    await UsuarioModel.findByIdAndUpdate(id, {
         estado: false
     })
 
